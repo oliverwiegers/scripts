@@ -1,13 +1,19 @@
 #!/bin/bash
 
-artist=$(playerctl metadata artist)
-track=$(playerctl metadata title)
-album=$(playerctl metadata album)
-status=$(playerctl status)
-if [ "$status" == "Paused" ]; then
-    printf "  Artist: $artist  Track: $track\n"
-elif [ "$status" == "Playing" ]; then
-    printf "  Artist: $artist   Track: $track\n"
+
+spotifyon=$(ps -e |grep spotify)
+if [ -z "$spotifyon" ]; then
+    echo ""
 else
-    echo " "
+	stat=$(playerctl status)
+	artist=$(playerctl metadata artist)
+	track=$(playerctl metadata title)
+	album=$(playerctl metadata album)
+	if [ "$stat" = "Paused" ]; then
+		printf "  Artist: $artist	Track: $track\n"
+	elif [ "$stat" = "Playing" ]; then
+		printf "  Artist: $artist	 Track: $track\n"
+	else
+		echo " "
+	fi
 fi

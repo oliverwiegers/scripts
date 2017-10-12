@@ -19,7 +19,7 @@ printf "Hello $USER please insert one of the following:\n
 ${coloron}0:${reset} to edit the ${coloron}.zshrc${reset}\n
 ${coloron}1:${reset} to edit the ${coloron}zsh_aliases${reset}\n
 ${coloron}2:${reset} to edit the ${coloron}zsh_settings${reset}\n
-${coloron}3:${reset} to edit the ${coloron}xmonad_config${reset}\n
+${coloron}3:${reset} to edit the ${coloron}i3_config${reset}\n
 ${coloron}4:${reset} to edit the ${coloron}.xinitrc${reset}\n
 ${coloron}5:${reset} to edit the ${coloron}.vimrc${reset}\n
 ${coloron}6:${reset} to edit the ${coloron}polybar_config${reset}\n
@@ -38,8 +38,8 @@ case $choice in
         $EDITOR $HOME/.config/zsh/zsh_settings
         ;;
     "3" )
-        $EDITOR $HOME/.xmonad/xmonad.hs
-        xmonad --recompile
+        $EDITOR $HOME/.i3/config
+		/usr/bin/i3-msg restart
         ;;
     "4" )
         $EDITOR $HOME/.xinitrc
@@ -49,6 +49,7 @@ case $choice in
         ;;
     "6" )
         $EDITOR $HOME/.config/polybar/config
+		/usr/bin/i3-msg restart
         ;;
     "hack" )
         $EDITOR $SCRIPT_DIR/edit_config.sh
