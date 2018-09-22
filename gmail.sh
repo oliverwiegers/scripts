@@ -1,7 +1,7 @@
 #!/bin/bash
 
-username="oliver.wiegers@gmail.com"
-password="ulrxazxhcjsgxhyu"
+username="$GOOGLE_USER"
+password="$GOOGLE_PASS"
 
 curl -u $username:$password --silent "https://mail.google.com/mail/feed/atom" \
 	> /tmp/gmail.xml

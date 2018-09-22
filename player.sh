@@ -10,9 +10,9 @@ else
 	track=$(playerctl metadata title)
 	album=$(playerctl metadata album)
 	if [ "$stat" = "Paused" ]; then
-		printf "  Artist: $artist	Track: $track\n"
+		printf "  $artist: $track\n"
 	elif [ "$stat" = "Playing" ]; then
-		printf "  Artist: $artist	 Track: $track\n"
+		printf "  $artist: $track\n"
 	else
 		echo " "
 	fi

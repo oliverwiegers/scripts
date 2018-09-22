@@ -8,7 +8,7 @@ read choice
 case $choice in
     "y" )
         printf "Choose one of the following:\n\n"
-        ls -l $HOME/Pictures/wallpaper/
+        ls -l $HOME/Pictures/wallpaper/ | tail -n+2 | awk '{print $9}'
         echo " "
         while [ "$check" != true ]; do
             printf "Insert the full name of the wallpaper you want to choose.\n\n"

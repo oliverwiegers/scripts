@@ -10,6 +10,6 @@ while read -r item; do
 			((done++))
 		fi
 	fi
-done < /home/chrootzius/Documents/textfiles/todo.md
+done < $HOME/Documents/textfiles/todo.md
 
 echo $done/$counter
