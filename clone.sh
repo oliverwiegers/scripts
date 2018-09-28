@@ -1,3 +1,3 @@
 #!/bin/bash
-directory=$(pwd)
-termite -d $directory &
+dir=$(pwd)
+alacritty --working-directory $dir &

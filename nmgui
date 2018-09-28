@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Start networkmananger-applet.
+nm-applet    2>&1 > /dev/null &
+# Show networkmananger-applet.
+trayer  2>&1 > /dev/null
+# Close networkmananger-applet.
+killall nm-applet
