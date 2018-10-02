@@ -38,7 +38,7 @@ case $choice in
         $EDITOR $HOME/.config/zsh/zsh_settings
         ;;
     "3" )
-        $EDITOR $HOME/.i3/config
+        $EDITOR $HOME/.config/i3/config
 		/usr/bin/i3-msg restart
         ;;
     "4" )
