@@ -1,19 +1,18 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
 
-spotifyon=$(ps -e |grep spotify)
+spotifyon=$(pgrep spotify)
 if [ -z "$spotifyon" ]; then
-    echo ""
+    printf ""
 else
-	stat=$(playerctl status)
+	status=$(playerctl status)
 	artist=$(playerctl metadata artist)
 	track=$(playerctl metadata title)
-	album=$(playerctl metadata album)
-	if [ "$stat" = "Paused" ]; then
-		printf "  $artist: $track\n"
-	elif [ "$stat" = "Playing" ]; then
-		printf "  $artist: $track\n"
+	if [ "${status}" = "Paused" ]; then
+		printf "  %s: %s\n" "${artist}" "${track}"
+	elif [ "${status}" = "Playing" ]; then
+		printf "  %s: %s\n" "${artist}" "${track}"
 	else
-		echo " "
+		printf " "
 	fi
 fi
