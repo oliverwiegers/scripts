@@ -23,9 +23,3 @@ DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 ### pacman.sh && invaders.sh
 
 These script are aliases to `pac` and `invade` and show some ascii art.
-
-### nmgui
-
-Because of `nmtui` and `nmcli` not being able to manage WPA2 Enterprise
-connections I use `network-manager-apllet` and this is shown by trayer if I need
-to see it. Normally I don't.
