@@ -1,29 +1,32 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
-if [[ $EUID -ne 0 ]]; then
-   printf "Please run as root.\nUsage: sudo ./downloadGentoo.sh /dev/sdX\n"
+if [ "$(id -u)" -ne 0 ]; then
+   printf 'Please run as root.\nUsage: sudo ./downloadGentoo.sh /dev/sdX\n'
    exit 1
 fi
-if [ $# -ne 1 ]; then
-    printf "No path given. Or to many arguments.\nUsage: sudo ./downloadGentoo.sh /dev/sdX\n"
+
+if [ "$#" -ne 1 ]; then
+    printf 'No path given. Or to many arguments.\nUsage: sudo ./downloadGentoo.sh /dev/sdX\n'
     exit 1
 fi
+
 if [ ! -b "$1" ]; then
-    printf "The given path: \"$1\" does not exist.\nCheck if the usb-Device is plugged in and the path is correct\n"
+    printf 'The given path: "%s" does not exist.\nCheck if the usb-Device is plugged in and the path is correct\n' "$1"
     exit 1
 fi
+
 #format.sh is needed in same directory to use colors
 if [ ! -f ./format.sh ]; then
     printf "\e[31mformat.sh musst be present to see colorized output.\nIgnore the following two error messages.\n\n\e[0m"
     echo " "
 else
-    source ./format.sh
+    . ./format.sh
     initANSI
 fi
 printf "${magentaf}Please be carefull running this script. Check if \"$1\" is the rigth device. It will be completely wiped.\n${reset}${redf}Correct device? (YES/n) Type uppercase YES.${reset}\n"
 check=0
 while [ $check -eq 0 ]; do
-    read choice
+    read -r choice
     case $choice in
         "YES" )
             printf "Your responsibility...\n"

@@ -44,7 +44,6 @@ check_required_software(){
         fi
     done
 }
-            
 
 choose_device(){
     local blockdevices=($(mount | grep ${fs_type} | \
@@ -199,7 +198,7 @@ if [ -z ${batch_mode} ]; then
     printf "\nFormat disk: ${magentaf}%s${reset} currently mounted at:\
  ${magentaf}%s${reset}?\n" \
         "${sdcard}" "${mountpoint}"
-    
+
     select choice in $choices; do
         if [ "${choice}" = "${greenf}yes${reset}" ]; then
             format_sdcard
@@ -211,7 +210,7 @@ if [ -z ${batch_mode} ]; then
     printf "\nUnmount sdcard: ${magentaf}%s${reset} currently mounted at:\
  ${magentaf}%s${reset}?\n" \
         "${sdcard}" "${mountpoint}"
-    
+
     select choice in $choices; do
         if [ "${choice}" = "${greenf}yes${reset}" ]; then
             unmount_sdcard
@@ -226,4 +225,3 @@ else
     format_sdcard
     unmount_sdcard
 fi
-
