@@ -176,6 +176,7 @@ case "${arg}" in
         fi
         /bin/sv restart iptables
         /bin/sv restart ip6tables
+        # shellcheck source=/home/oliverwiegers/Documents/scripts/tor_check.sh
         shift
         ;;
     stop)
