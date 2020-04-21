@@ -4,12 +4,12 @@
 usage="Usage: $(basename "$0") -m MESSAGE -c COMMAND
 Simple tool to create dmenu dialog and execute command based on decission.
 
-	-h | --help print this help message
+    -h | --help print this help message
 
-	-m | --message MESSAGE to display
-	-c | --command COMMAND to execute
-	-w | --wal-colors use wal colors for dmenu if existent
-	"
+    -m | --message MESSAGE to display
+    -c | --command COMMAND to execute
+    -w | --wal-colors use wal colors for dmenu if existent
+    "
 
 # Command line argument pasing.
 while [ $# -gt 0 ]; do
@@ -21,32 +21,32 @@ while [ $# -gt 0 ]; do
             if [ -f "${HOME}/.cache/wal/colors.sh" ]; then
                 # shellcheck source=/home/oliverwiegers/.cache/wal/colors.sh
                 . "${HOME}/.cache/wal/colors.sh"
-        	    wal=1
+                wal=1
             else
                 wal=0
             fi
-        	shift
-        	;;
+            shift
+            ;;
         -m|--message)
             # Set prompt messeage.
-        	message="$2"
-        	shift 2
-        	;;
+            message="$2"
+            shift 2
+            ;;
         -c|--command)
             # Set command to execute.
-        	cmd="$2"
-        	shift 2
-        	;;
+            cmd="$2"
+            shift 2
+            ;;
         -h|--help)
             # Print help message and exit.
-    		printf "%s\n" "${usage}"	
-    		exit 1
-        	;;
+            printf "%s\n" "${usage}"    
+            exit 1
+            ;;
         *)
             # Print help message and exit if wrong argument occours.
-    		printf "Unknown argument: %s\n\n%s" "$1" "${usage}"	
-    		exit 1
-        	;;
+            printf "Unknown argument: %s\n\n%s" "$1" "${usage}" 
+            exit 1
+            ;;
     esac
 done
 
