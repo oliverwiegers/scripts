@@ -5,7 +5,12 @@ read -r is_tor ip country_code<<<"$(sh "$SCRIPT_DIR/tor_check.sh" \
 
 state=''
 
-if [ "${is_tor}" = "true" ]; then
+if [ -z "${is_tor}" ]; then
+    if ! ping google.com 2> /dev/null; then
+        state='%{F#DC143C}NO CONNECTION%{F-}'
+        printf "%b" "${state}"
+    fi
+elif [ "${is_tor}" = "true" ]; then
     state='%{F#69aa86}TOR%{F-}'
     printf "%b IP: %s Country: %s" \
         "${state}" "${ip}" "${country_code}"
