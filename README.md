@@ -19,7 +19,3 @@ PATH=/usr/bin:/bin
 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 1 * * * * /home/oliverwiegers/Documents/scripts/todo.sh
 ```
-
-### pacman.sh && invaders.sh
-
-These script are aliases to `pac` and `invade` and show some ascii art.
