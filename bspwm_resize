@@ -1,0 +1,128 @@
+#!/usr/bin/env sh
+
+# A POSIX variable.
+# Reset in case getopts has been used previously in the shell.
+OPTIND=1
+
+# Initialize variables.
+motion=''
+direction=''
+size=0
+
+# Print usage.
+print_usage() {
+    usage="$(basename "$0") [-h] [-s KEY] -- resize bspwm floating windows.
+
+        -h  show this usage.
+        -e  DIRECTION expand window in direction
+        -c  DIRECTION condense window in direction
+        -l  list possible directions
+        -s  size to change window"
+
+    printf '%s\n' "${usage}"
+}
+
+# Parse command line arguments.
+while getopts "he:c:ls:" opt; do
+    case "$opt" in
+    h)
+        print_usage
+        exit 0
+        ;;
+    e)
+        motion='expand'
+        direction=$OPTARG
+        ;;
+    c)
+        motion='condense'
+        direction=$OPTARG
+        ;;
+    l)
+        printf 'Possible directions: north, east, south, west, all\n'
+        exit 0
+        ;;
+    s)
+        size=$OPTARG
+        ;;
+    *)
+        print_usage
+        exit 1
+        ;;
+    esac
+done
+shift $((OPTIND-1))
+[ "${1:-}" = "--" ] && shift
+
+if [ "$motion" = 'expand' ]; then
+    case "$direction" in
+        north)
+            bspc node -z top 0 -"${size}"
+            ;;
+        east)
+            bspc node -z right "${size}" 0
+            ;;
+        south)
+            bspc node -z bottom 0 "${size}"
+            ;;
+        west)
+            bspc node -z left -"${size}" 0
+            ;;
+        vertical)
+            bspc node -z top 0 -"${size}"
+            bspc node -z bottom 0 "${size}"
+            ;;
+        horizontal)
+            bspc node -z right "${size}" 0
+            bspc node -z left -"${size}" 0
+            ;;
+        all)
+            bspc node -z top 0 -"${size}"
+            bspc node -z right "${size}" 0
+            bspc node -z bottom 0 "${size}"
+            bspc node -z left -"${size}" 0
+            ;;
+        *)
+            printf 'Unknown direction -- %s\n' "${direction}"
+            print_usage
+            exit 1
+            ;;
+    esac
+elif [ "$motion" = 'condense' ]; then
+    case "$direction" in
+        north)
+            bspc node -z top 0 "${size}"
+            ;;
+        east)
+            bspc node -z right -"${size}" 0
+            ;;
+        south)
+            bspc node -z bottom 0 -"${size}"
+            ;;
+        west)
+            bspc node -z left "${size}" 0
+            ;;
+        vertical)
+            bspc node -z top 0 "${size}"
+            bspc node -z bottom 0 -"${size}"
+            ;;
+        horizontal)
+            bspc node -z right -"${size}" 0
+            bspc node -z left "${size}" 0
+            ;;
+        all)
+            bspc node -z top 0 "${size}"
+            bspc node -z right -"${size}" 0
+            bspc node -z bottom 0 -"${size}"
+            bspc node -z left "${size}" 0
+            ;;
+        *)
+            printf 'Unknown direction -- %s\n' "${direction}"
+            print_usage
+            exit 1
+            ;;
+    esac
+else
+    printf 'Unknown motion -- %s\n' "${motion}"
+    print_usage
+    exit 1
+fi
