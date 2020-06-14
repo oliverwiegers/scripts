@@ -41,7 +41,7 @@ done
 usb=$1
 link='http://distfiles.gentoo.org/releases/amd64/autobuilds'
 printf "${magentaf}Retrieving verion number.\n${reset}"
-version=$(curl -# "$link/latest-iso.txt" | egrep '[[:digit:]]{8}/install-amd64-minimal-[[:digit:]]{8}.iso' | cut -d'/' -f1)
+version=$(curl -# "$link/latest-iso.txt" | grep -E '[[:digit:]]{8}/install-amd64-minimal-[[:digit:]]{8}.iso' | cut -d'/' -f1)
 iso=install-amd64-minimal-$version.iso
 digests=$iso.DIGESTS.asc
 printf "\n${magentaf}Downloading iso file...\n${reset}"
@@ -59,7 +59,7 @@ sha512sum ./$iso
 printf "${greenf}Everything okay? (y/n)\n${reset}"
 check=0
 while [ $check -eq 0 ]; do
-    read choice
+    read -r choice
     case $choice in
         "y" )
             printf "Okay let's go on.\n"
@@ -67,8 +67,8 @@ while [ $check -eq 0 ]; do
             ;;
         "n" )
             printf "It seems that some of the downloaded files are corrupt. Please check download source and restart.\n"
-            rm ./$iso
-            rm ./$digests
+            rm "./$iso"
+            rm "./$digests"
             check=1
             exit 1
             ;;
@@ -80,11 +80,11 @@ done
 printf "Fomatting $usb...\n${greenf}Would you like to write the usb-drive with random data, for security reasons?${reset}\n${boldon}${redf}NOTE:${reset} This could take a while. (y/n)\n"
 check=0
 while [ $check -eq 0 ]; do
-    read choice
+    read -r choice
     case $choice in
         "y" )
             printf "Writing random data to \"$usb\"...\nThis could take a while...\n"
-            dd if=/dev/urandom of=$usb status=progress
+            dd if=/dev/urandom of="$usb" status=progress
             check=1
             ;;
         "n" )
@@ -96,8 +96,8 @@ while [ $check -eq 0 ]; do
             ;;
     esac
 done
-wipefs -a $usb
-fdisk $usb <<EOF
+wipefs -a "$usb"
+fdisk "$usb" <<EOF
 n
 
 
@@ -112,7 +112,7 @@ EOF
 printf "${greenf}Everything okay? (y/n)\n${reset}"
 check=0
 while [ $check -eq 0 ]; do
-    read choice
+    read -r choice
     case $choice in
         "y" )
             check=1
@@ -120,16 +120,16 @@ while [ $check -eq 0 ]; do
             ;;
         "n" )
             printf "${greenf}Would you like to format the usb-drive manually or abort? (y: format/n: abort)\n${reset}"
-            read choice
+            read -r choice
             case $choice in
                 "y" )
-                    wipefs -a $usb
-                    fdisk $usb
+                    wipefs -a "$usb"
+                    fdisk "$usb"
                     check=1
                     ;;
                 "n" )
-                    rm ./$iso
-                    rm ./$digests
+                    rm "./$iso"
+                    rm "./$digests"
                     check=true
                     exit 1
                     ;;
@@ -143,12 +143,12 @@ while [ $check -eq 0 ]; do
 done
 printf "${magentaf}Finally writing iso image to usb-drive...\n${reset}"
 if [ -f /bin/pv ] || [ -f /sbin/pv ] || [ -f /usr/bin/pv ] || [ -f /usr/sbin/pv ] || [ -f /usr/local/bin/pv ] || [ -f /usr/local/bin/pv ]; then
-    size=$(stat -c%s ./$iso)
-    dd if=./$iso | pv -pteras $size | dd of=$usb
+    size="$(stat -c%s "./$iso")"
+    dd if="./$iso" | pv -pteras "$size" | dd of="$usb"
 else
     printf "${greenf}pv is not present on your system... so no fancy status bar just dd status.\n${reset}"
-    dd if=./$iso of=$usb status=progress oflag=direct
+    dd if="./$iso" of="$usb" status=progress oflag=direct
 fi
-rm ./$iso
-rm ./$digests
+rm "./$iso"
+rm "./$digests"
 printf "${redf}TODO:\nCreate Backups.\ngit commit and git push\nand don't screw up on installation.\nHave fun!\n${reset}"
