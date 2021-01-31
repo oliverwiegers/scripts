@@ -1,9 +1,19 @@
 #!/usr/bin/env sh
 
 # Define variables.
-statefile="/usr/local/share/statefiles/tor.state"
-logfile="/var/log/tor_check.log"
+statedir="$HOME/.local/share/statefiles"
+statefile="${statedir}/tor.state"
+logdir="$HOME/.local/var/log"
+logfile="${logdir}/tor_check.log"
 old_ip="$(sed 1q "${statefile}" 2> /dev/null)"
+
+if ! [ -d "${statedir}" ]; then
+    mkdir -p "${statedir}"
+fi
+
+if ! [ -d "${logdir}" ]; then
+    mkdir -p "${logdir}"
+fi
 
 # Get data from tor api.
 data="$(curl https://check.torproject.org/api/ip 2> /dev/null)"
