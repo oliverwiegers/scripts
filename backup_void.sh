@@ -8,8 +8,9 @@ local_user="$(whoami)"
 remote_user='root'
 target='192.168.1.1'
 target_dir='/mnt/backup'
+incremental=0
 key="/home/${local_user}/.ssh/id_rsa"
-logfile='/var/log/backup.log'
+logfile="$HOME/.local/var/log/backup.log"
 create_date_dir=1
 
 # Print usage.
@@ -23,6 +24,7 @@ print_usage() {
         -r  REMOTE_USER     user to login into target host.
         -t  TARGET          IP of target host.
         -d  TARGET_DIR      target dir on target host.
+        -i                  create incremental backup.
         -k  KEY             SSH key to use.
         -f  LOGFILE         logfile."
 
@@ -31,7 +33,7 @@ print_usage() {
 
 
 # Parse command line arguments.
-while getopts "h?l:r:t:d:k:" opt; do
+while getopts "h?l:r:t:id:k:" opt; do
     case "$opt" in
     h)
         print_usage
@@ -47,6 +49,9 @@ while getopts "h?l:r:t:d:k:" opt; do
     t)
         target=$OPTARG
         ;;
+    i)
+        incremental=1
+        ;;
     d)
         target_dir=$OPTARG
         create_date_dir=0
@@ -61,6 +66,13 @@ while getopts "h?l:r:t:d:k:" opt; do
     esac
 done
 
+
+if [ "${incremental}" -eq 1 ]; then
+    target_path='/mnt/backup/incremental'
+else
+    target_path="${target_dir}"
+fi
+
 date_string="$(date +%Y%d%m)"
 
 if [ "${create_date_dir}" -ne 1 ]; then
@@ -69,10 +81,8 @@ if [ "${create_date_dir}" -ne 1 ]; then
         mkdir "${target_path}" >> "${logfile}" 2>&1
 fi
 
-target_path="${target_dir}"
-
 rsync -e "ssh -i \"${key}\"" \
-    -av --exclude '.git' \
-    /etc /home \
+    -avuP --exclude '.git' \
+    /etc "/home/${local_user}" \
     "${remote_user}@${target}:${target_path}" >> "${logfile}" 2>&1
 
