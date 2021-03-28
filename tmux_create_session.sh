@@ -5,7 +5,7 @@ set -euo pipefail;
 template='code'
 code_session=0
 project_name='default'
-create_working_dir=0
+create_working_dir=1
 working_dir="$HOME/Documents/projects/${project_name}"
 
 # Print usage.
