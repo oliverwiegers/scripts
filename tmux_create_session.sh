@@ -103,9 +103,7 @@ _run() {
         esac
     done
 
-    if [ "${code_session}" -eq 1 ]; then
-        _create_and_attach_code_session
-    fi
+    _create_and_attach_session
 }
 
 _run "$@"
