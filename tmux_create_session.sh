@@ -91,6 +91,7 @@ _run() {
             ;;
         p)
             project_name=$OPTARG
+            working_dir="$HOME/Documents/projects/${project_name}"
             ;;
         n)
             working_dir="$HOME"
