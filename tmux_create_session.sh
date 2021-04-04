@@ -3,7 +3,7 @@
 set -euo pipefail;
 
 template='code'
-code_session=0
+language=''
 project_name='default'
 create_working_dir=1
 working_dir="$HOME/Documents/projects/${project_name}"
@@ -14,7 +14,9 @@ _print_usage() {
 
     Dummy message
 
-        -p  TEXT    project name.
+        -p  TEXT    project name. [default: default]
+        -l  TEXT    programmig language of project. [default: empty]
+                    Options: [rust]
         -t  TEXT    choose session template. [default: code]
                     Options: [code|daywork]
         -n          do not create new working dir.
@@ -32,6 +34,23 @@ _create_code_session() {
         tmux new-window -d -t "${project_name}:" -c "${working_dir}" -n "testing"
         tmux new-window -d -t "${project_name}:" -c "${working_dir}" -n "man-pages"
         tmux new-window -d -t "${project_name}:" -c "${working_dir}" -n "docs"
+
+        case "${language}" in
+            "rust")
+                tmux new-window \
+                    -d \
+                    -t "${project_name}:" \
+                    -c "${working_dir}" \
+                    'cargo init'
+                ;;
+            "python")
+                tmux new-window \
+                    -d \
+                    -t "${project_name}:" \
+                    -c "${working_dir}" \
+                    "mkdir docs  etc \"${project_name}\" && touch LICENSE MANIFEST.in  README.md  setup.py"
+                ;;
+        esac
 
 }
 
@@ -80,7 +99,7 @@ _run() {
     OPTIND=1
     
     # Parse command line arguments.
-    while getopts "h?t:p:n" opt; do
+    while getopts "h?t:l:p:n" opt; do
         case "$opt" in
         h)
             _print_usage
@@ -88,6 +107,9 @@ _run() {
             ;;
         t)
             template=$OPTARG
+            ;;
+        l)
+            language=$OPTARG
             ;;
         p)
             project_name=$OPTARG
