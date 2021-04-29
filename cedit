@@ -1,0 +1,52 @@
+#!/usr/bin/env sh
+
+# Script to search for relevant config files via find / fzf and than open
+# selected file for editing with $EDITOR.
+
+# Directories to search and ignore.
+config_directories="$HOME/.vim $HOME/.dotfiles"
+ignore_paths='*/\.git/* */extra/* */pack/* */undodir/* */after/* */plugins/* *.spl'
+
+# Build find command.
+cmd="find ${config_directories}"
+
+for path in ${ignore_paths}; do
+    cmd="${cmd} -not -path '${path}'"
+done
+
+# If terminal window is to small show no preview and use full window.
+# If terminla window is big enough show preview of files.
+if [ "$(tput lines)" -lt 32 ] || [ "$(tput cols)" -lt 106 ]; then
+    cmd="${cmd} -type f,l \
+        | fzf \
+        -i \
+        --cycle \
+        --ansi \
+        --margin 1 \
+        --border rounded \
+        --header 'Select config file to edit' \
+        --color 'header:bold'"
+else
+    cmd="${cmd} -type f,l \
+        | fzf \
+        -i \
+        --cycle \
+        --ansi \
+        --header 'Select config file to edit.' \
+        --color 'header:bold' \
+        --height 50 \
+        --margin 8,16 \
+        --border rounded \
+        --preview 'bat --theme gruvbox-dark {}'"
+fi
+
+
+# Execute find command to search for config file to edit.
+config_file="$(eval "${cmd}")"
+
+# Edit selected file or exit if no file is selected.
+if [ -n "${config_file}" ]; then
+    $EDITOR "${config_file}"
+else
+    printf 'No config file selected.\n'
+fi
