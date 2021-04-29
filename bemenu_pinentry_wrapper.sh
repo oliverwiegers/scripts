@@ -4,7 +4,7 @@
 # shellcheck source=/home/oliverwiegers/.cache/wal/colors.sh
 . "${HOME}/.cache/wal/colors.sh"
 
-pinentry_bemenu \
+pinentry-bemenu \
      --line-height 40 \
      --tb "${color0}" --tf "${color4}" \
      --fb "${color0}" --ff "${color8}" \
