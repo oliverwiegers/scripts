@@ -6,9 +6,9 @@
 
 pinentry-bemenu \
      --line-height 40 \
-     --tb "${color0}" --tf "${color4}" \
+     --tb "${color0}" --tf "${color1}" \
      --fb "${color0}" --ff "${color8}" \
      --nb "${color0}" --nf "${color8}" \
-     --hb "${color0}" --hf "${color4}" \
+     --hb "${color0}" --hf "${color1}" \
      --tb "${color0}" --tf "${color1}" \
-     --sb "${color8}" --tf "${color4}"
+     --sb "${color8}" --tf "${color1}"
