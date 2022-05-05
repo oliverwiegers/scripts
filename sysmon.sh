@@ -15,6 +15,7 @@ OPTIND=1
 # Initialize variables.
 sorted_output=0
 sort_key=''
+reverse=0
 header=1
 lines=0
 
@@ -40,12 +41,13 @@ print_license() {
 
 # Print usage.
 print_usage() {
-    usage="$(basename "$0") [-h] [-s KEY] -- tool to show the memory usage of \
-processes.
+    usage="$(basename "$0") [-h] [-s KEY] -- tool to show the resource usage \
+of processes.
 
         -h  show this usage.
         -H  don't print the header.
         -l  limit output by LINES. 0 will print all lines.
+        -r  reverse order of sorted output.
         -t  print total memory usage.
         -s  sort the output by KEY.
         -S  list all keys to sort by and exit.
@@ -56,10 +58,11 @@ processes.
     printf '%s\n' "${usage}"
 }
 
-# Get memory usage of processes.
-get_memusage () {
-    ps ax -o pid,user,rss,command\
-        | awk '/PID/ {next} {printf "%-10s%-15s%-15.2f%s\n",$1,$2,$3/1024,$4}'
+# Get resource usage of processes.
+get_usage () {
+    ps ax -o pid,user,rss,pcpu,command \
+        | awk \
+        '/PID/ {next} {printf "%-10s%-15s%-15.2f%-15s%s\n",$1,$2,$3/1024,$4,$5}'
 }
 
 # Calcutlate total
@@ -68,7 +71,7 @@ calculate_total() {
 }
 
 # Parse command line arguments.
-while getopts "h?LVatl:s:SH" opt; do
+while getopts "h?LVartl:s:SH" opt; do
     case "$opt" in
     h|\?)
         print_usage
@@ -86,6 +89,9 @@ while getopts "h?LVatl:s:SH" opt; do
         print_about
         exit 0
         ;;
+    r)
+        reverse=1
+        ;;
     t)
         calculate_total
         exit 0
@@ -98,7 +104,8 @@ while getopts "h?LVatl:s:SH" opt; do
         sort_key="$OPTARG"
         ;;
     S)
-        printf '["%s", "%s", "%s", "%s"]\n' 'pid' 'owner' 'mem' 'cmd'
+        printf '["%s", "%s", "%s", "%s", "%s"]\n' \
+            'pid' 'owner' 'mem' 'cpu' 'cmd'
         exit 0
         ;;
     H)
@@ -111,22 +118,28 @@ shift $((OPTIND-1))
 
 # Print header, if wanted.
 if [ $header -ne 0 ]; then
-    printf "%-10s%-15s%-15s%s\n" "PID" "OWNER" "MEMORY MB" "COMMAND"
+    printf "%-10s%-15s%-15s%-15s%s\n" "PID" "OWNER" "MEMORY MB" "CPU" "COMMAND"
 fi
 
 # Sort output if wanted.
 if [ $sorted_output -ne 0 ]; then
     if [ "${sort_key}" = 'pid' ]; then
-        output=$(get_memusage | sort -bn -k1)
+        output=$(get_usage | sort -bn -k1)
     elif [ "${sort_key}" = 'owner' ]; then
-        output=$(get_memusage | sort -br -k2)
+        output=$(get_usage | sort -br -k2)
     elif [ "${sort_key}" = 'mem' ]; then
-        output=$(get_memusage | sort -bnr -k3)
+        output=$(get_usage | sort -bnr -k3)
+    elif [ "${sort_key}" = 'cpu' ]; then
+        output=$(get_usage | sort -br -k4)
     elif [ "${sort_key}" = 'cmd' ]; then
-        output=$(get_memusage | sort -br -k4)
+        output=$(get_usage | sort -br -k5)
     fi
 else
-    output=$(get_memusage)
+    output=$(get_usage)
+fi
+
+if [ "${reverse}" -ne 0 ]; then
+    output="$(echo "${output}" | tac)"
 fi
 
 # Limit output to N lines if wanted.
