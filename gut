@@ -35,7 +35,7 @@ def main():
         # The standard output is redirected to the original file within the loop
         # Thus any print statements write back into the original file
         if "submodule" in line:
-            return
+            continue
 
         if "url" in line:
             if "https://" in line:
