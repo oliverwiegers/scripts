@@ -18,7 +18,7 @@ run() {
     # A POSIX variable.
     # Reset in case getopts has been used previously in the shell.
     OPTIND=1
-    
+
     # Parse command line arguments.
     while getopts "h?u:" opt; do
         case "$opt" in

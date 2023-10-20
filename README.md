@@ -14,12 +14,12 @@ with the tool name.
 
 For example: `tmux_create_sessions.sh` is a helper script to manage tmux
 sessions.
- 
+
 ## Additional information
 
 ### todo.sh
 
-In order for this script to be usefull a crontab like the following is needed:
+In order for this script to be useful a crontab like the following is needed:
 
 ```
 DISPLAY=:0

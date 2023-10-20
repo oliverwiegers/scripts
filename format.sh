@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2034
 
 initANSI() {
 
-#make special characters useable
+#make special characters usable
 esc="$(echo -en '\e')"
 
 #foreground colors

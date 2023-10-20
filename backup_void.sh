@@ -85,4 +85,3 @@ rsync -e "ssh -i \"${key}\"" \
     -avuP --exclude '.git' \
     /etc "/home/${local_user}" \
     "${remote_user}@${target}:${target_path}" >> "${logfile}" 2>&1
-

@@ -28,7 +28,7 @@ _print_usage() {
 _create_code_session() {
         # Create session..
         tmux new-session -d -s "${project_name}" -c "${working_dir}" -n "editor"
-    
+
         # Create additional windows.
         tmux new-window -d -t "${project_name}:" -c "${working_dir}" -n "shell"
         tmux new-window -d -t "${project_name}:" -c "${working_dir}" -n "testing"
@@ -57,7 +57,7 @@ _create_code_session() {
 _create_daywork_session() {
         # Create session..
         tmux new-session -d -s "${project_name}" -c "${working_dir}"
-    
+
         # Create additional windows.
         tmux new-window -d -t "${project_name}:" -c "${working_dir}"
         tmux new-window -d -t "${project_name}:" -c "${working_dir}"
@@ -70,7 +70,7 @@ _create_and_attach_session() {
             mkdir -p "${working_dir}"
         fi
     fi
-     
+
     # Create new session if none with right name exists.
     if ! [ "$(tmux ls -F '#S' | grep -E "^${project_name}$")" = "${project_name}" ]; then
         case "${template}" in
@@ -82,7 +82,7 @@ _create_and_attach_session() {
                 ;;
         esac
     fi
-    
+
     # Check if already attached to tmux session.
     # Switch session if already attached.
     # Open tmux and attach to session if not already attached.
@@ -97,7 +97,7 @@ _run() {
     # A POSIX variable.
     # Reset in case getopts has been used previously in the shell.
     OPTIND=1
-    
+
     # Parse command line arguments.
     while getopts "h?t:l:p:n" opt; do
         case "$opt" in

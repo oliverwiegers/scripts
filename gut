@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""GUT - Git Upstream Toggler.
+
+Simple CLI tool to toggle git repo upstream protocol from https to git and vice
+versa.
+
+Typical usage:
+    $ gut
+"""
+
+import os
+import sys
+import argparse
+import pathlib
+import fileinput
+
+
+def main():
+    """Console entry point.
+
+    Provide cli interface for help and contain logic.
+    """
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.parse_args()
+
+    if not pathlib.Path(os.getcwd() + "/.git").is_dir():
+        print("Current directory doesn't seem to be a git repository.", file=sys.stderr)
+        sys.exit(1)
+
+    for line in fileinput.input(os.getcwd() + "/.git/config", inplace=True):
+        # The original file is moved to a backup file
+        # The standard output is redirected to the original file within the loop
+        # Thus any print statements write back into the original file
+        if "url" in line:
+            if "https://" in line:
+                print(line.replace("https://", "git@").replace("/", ":", 1), end="")
+            elif "git@" in line:
+                print(line.replace(":", "/").replace("git@", "https://"), end="")
+        else:
+            print(line)
+
+
+if __name__ == "__main__":
+    main()

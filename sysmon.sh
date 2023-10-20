@@ -23,7 +23,7 @@ lines=0
 print_about() {
     printf '%-15s%s\n' 'Written on:' "${date}"
     printf '%-15s%s\n' 'Written by:' "${author}"
-    printf '%-15s%s\n' 'Email adress:' "${email}"
+    printf '%-15s%s\n' 'Email address:' "${email}"
     printf '%-15s%s\n' 'Version:' "${version}"
     printf '%-15s%s %s\n' 'License:' "${license}" "${license_url}"
 }

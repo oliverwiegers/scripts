@@ -22,10 +22,10 @@ print_usage() {
 _getCurrentOrder() {
     tmp_file="$1"
     desktops="$(bspc query -D)"
-    
+
     for desktop in ${desktops}; do
         nodes="$(bspc query -d "${desktop}" --nodes)"
-    
+
         for node in ${nodes}; do
             printf '%s %s\n' "${node}" "${desktop}" >> "${tmp_file}"
         done

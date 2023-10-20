@@ -2,7 +2,7 @@
 
 # Help/Usage message definition.
 usage="Usage: $(basename "$0") -m MESSAGE -c COMMAND
-Simple tool to create wofi dmenu mode dialog and execute command based on decission.
+Simple tool to create wofi dmenu mode dialog and execute command based on decision.
 
     -h | --help print this help message
 
@@ -10,7 +10,7 @@ Simple tool to create wofi dmenu mode dialog and execute command based on deciss
     -c | --command COMMAND to execute
     "
 
-# Command line argument pasing.
+# Command line argument parsing.
 while [ $# -gt 0 ]; do
     key="$1"
     case $key in
@@ -26,12 +26,12 @@ while [ $# -gt 0 ]; do
             ;;
         -h|--help)
             # Print help message and exit.
-            printf "%s\n" "${usage}"    
+            printf "%s\n" "${usage}"
             exit 1
             ;;
         *)
-            # Print help message and exit if wrong argument occours.
-            printf "Unknown argument: %s\n\n%s" "$1" "${usage}" 
+            # Print help message and exit if wrong argument occurs.
+            printf "Unknown argument: %s\n\n%s" "$1" "${usage}"
             exit 1
             ;;
     esac

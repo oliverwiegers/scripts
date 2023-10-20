@@ -6,5 +6,5 @@ main() {
     ln -sf "$HOME/.cache/wal/dunstrc" "$HOME/.config/dunst/"
 }
 
-# Exection of functions.
+# Execution of functions.
 main

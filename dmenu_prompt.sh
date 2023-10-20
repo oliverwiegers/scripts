@@ -2,7 +2,7 @@
 
 # Help/Usage message definition.
 usage="Usage: $(basename "$0") -m MESSAGE -c COMMAND
-Simple tool to create dmenu dialog and execute command based on decission.
+Simple tool to create dmenu dialog and execute command based on decision.
 
     -h | --help print this help message
 
@@ -11,12 +11,12 @@ Simple tool to create dmenu dialog and execute command based on decission.
     -w | --wal-colors use wal colors for dmenu if existent
     "
 
-# Command line argument pasing.
+# Command line argument parsing.
 while [ $# -gt 0 ]; do
     key="$1"
     case $key in
         -w|--wal-colors)
-            # Check wether wal colors exist and import.
+            # Check whether wal colors exist and import.
             # If not use dmenu with default colors.
             if [ -f "${HOME}/.cache/wal/colors.sh" ]; then
                 # shellcheck source=/home/oliverwiegers/.cache/wal/colors.sh
@@ -39,12 +39,12 @@ while [ $# -gt 0 ]; do
             ;;
         -h|--help)
             # Print help message and exit.
-            printf "%s\n" "${usage}"    
+            printf "%s\n" "${usage}"
             exit 1
             ;;
         *)
-            # Print help message and exit if wrong argument occours.
-            printf "Unknown argument: %s\n\n%s" "$1" "${usage}" 
+            # Print help message and exit if wrong argument occurs.
+            printf "Unknown argument: %s\n\n%s" "$1" "${usage}"
             exit 1
             ;;
     esac

@@ -6,7 +6,7 @@
 while [ -z "$(pgrep session -n -U $UID)" ]; do sleep 3; done
 
 # Export the current desktop session environment variables
-export $(xargs -0 -a "/proc/$(pgrep session -n -U $UID)/environ")
+export "$(xargs -0 -a "/proc/$(pgrep session -n -U $UID)/environ")"
 
 # Execute the input command
 nohup "$@" >/dev/null 2>&1 &

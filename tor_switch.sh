@@ -60,7 +60,7 @@ COMMIT
 print_about() {
     printf '%-15s%s\n' 'Written on:' "${date}"
     printf '%-15s%s\n' 'Written by:' "${author}"
-    printf '%-15s%s\n' 'Email adress:' "${email}"
+    printf '%-15s%s\n' 'Email address:' "${email}"
     printf '%-15s%s\n' 'Version:' "${version}"
     printf '%-15s%s %s\n' 'License:' "${license}" "${license_url}"
 }
@@ -90,8 +90,8 @@ This script needs to be run as root.
         -a  print about message and exit.
 
         COMMANDS:
-        init     create all neede iptables rules.
-        cleanup  delete all iptables rule and restore defualt state.
+        init     create all needed iptables rules.
+        cleanup  delete all iptables rule and restore default state.
         start    start tor routing.
         stop     stop tor routing.
         reload   reload tor service to get new ip."

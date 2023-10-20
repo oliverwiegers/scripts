@@ -59,7 +59,7 @@ daemons=(
     apache2
 )
 
-# Command line parsing varible.
+# Command line parsing variable.
 system_info=0
 network_interfaces=0
 diskusage=0
@@ -181,7 +181,7 @@ while [ $# -gt 0 ]; do
             apache_vhosts=1
             apache_status=1
             defaults=0
-            for tool in ${tools[*]}; do
+            for tool in "${tools[@]}"; do
                 if ! _depCheck "${tool}" "false" > /dev/null; then
                     if [ "${tool}" = 'task' ]; then
                         taskwarrior=0
@@ -191,7 +191,7 @@ while [ $# -gt 0 ]; do
                 fi
             done
 
-            for daemon in ${daemons[*]}; do
+            for daemon in "${daemons[@]}"; do
                 if ! _depCheck "${daemon}" "true" > /dev/null; then
                     if [ "${daemon}" = 'nginx' ]; then
                         nginx_vhosts=0
@@ -218,7 +218,6 @@ while [ $# -gt 0 ]; do
         *)
             printf 'Illegal option %s\n' "${key}"
             exit 1
-            shift
             ;;
     esac
 done
@@ -335,7 +334,7 @@ _sysInfo() {
         fi
         printf "\033[1m%-10s\033[0m \033[0;36m%s\n\033[0m"\
             "Uptime:" "${uptime}"
-        
+
         if [ "${icons}" -eq 1 ]; then
             printf '\033[1m  '
         fi
@@ -492,7 +491,7 @@ _nginxVhosts() {
 
     vhosts="$(grep -r -E '( server_name ).*\;' /etc/nginx/ | awk '{$2=""; print $0}' | tr -d ';:')"
     table_data="$(mktemp)"
-    
+
     printf 'vHost File,Server Names\n' > "${table_data}"
     while read -r line; do
             read -r file server_names <<<"${line}"
@@ -511,7 +510,7 @@ _nginxStatus() {
 
     table_data="$(mktemp)"
     status="$(curl -s localhost:80/nginx_status)"
-    
+
     printf 'Key,Value\n' > "${table_data}"
 
     {
@@ -524,7 +523,7 @@ _nginxStatus() {
         "$(echo "${status}" | grep -A 1 server | tail -1 | awk '{print $2}')"
     printf 'Server Requestst,%s\n'\
         "$(echo "${status}" | grep -A 1 server | tail -1 | awk '{print $3}')"
-    
+
     echo "${status}" | tail -1 | awk '{print $1 $2}' | tr ':' ','
     echo "${status}" | tail -1 | awk '{print $3 $4}' | tr ':' ','
     echo "${status}" | tail -1 | awk '{print $5 $6}' | tr ':' ','
@@ -547,7 +546,7 @@ _apacheVhosts() {
         | awk '/namevhost/ {print $4 " " $5}'\
         | tr -d '(:)')"
     table_data="$(mktemp)"
-    
+
     printf 'vHost File,Server Name\n' > "${table_data}"
     while read -r line; do
             read -r server_name file <<<"${line}"
@@ -566,7 +565,7 @@ _apacheStatus() {
 
     table_data="$(mktemp)"
     status="$(curl -s localhost:80/server-status)"
-    
+
     printf 'Key,Value\n' > "${table_data}"
 
     {

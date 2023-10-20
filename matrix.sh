@@ -15,7 +15,7 @@ _print_rabbit() {
    ' \`    ,   )   .'
       \`._ ,  '   /_
          ; ,''-,;' \`\`-
-          \`\`-..__\\\`\`--\`  
+          \`\`-..__\\\`\`--\`
 EOF
 }
 
@@ -41,12 +41,12 @@ for line in "${lines[@]}"; do
 
     # Per line character by character printing.
     while [ ${#line} -gt 0 ]; do
-        printf '%s' "${line%${line#?}}"
+        printf '%s' "${line%"${line#?}"}"
         line=${line#?}
         sleep 0.1
-    done  
-    
-    # Sleep between lines beeing printed.
+    done
+
+    # Sleep between lines being printed.
     sleep 0.5
 
     # Reset formatting.
