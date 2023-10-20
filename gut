@@ -34,16 +34,16 @@ def main():
         # The original file is moved to a backup file
         # The standard output is redirected to the original file within the loop
         # Thus any print statements write back into the original file
-        if "submodule" in line:
-            continue
-
         if "url" in line:
             if "https://" in line:
                 print(line.replace("https://", "git@").replace("/", ":", 1), end="")
                 print("Changed from 'https' to 'git'.", file=sys.stderr)
-            elif "git@" in line:
+                return
+
+            if "git@" in line:
                 print(line.replace(":", "/").replace("git@", "https://"), end="")
                 print("Changed from 'git' to 'https'.", file=sys.stderr)
+                return
         else:
             print(line, end="")
 
