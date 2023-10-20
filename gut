@@ -37,10 +37,12 @@ def main():
         if "url" in line:
             if "https://" in line:
                 print(line.replace("https://", "git@").replace("/", ":", 1), end="")
+                print("Changed from 'https' to 'git'.", file=sys.stderr)
             elif "git@" in line:
                 print(line.replace(":", "/").replace("git@", "https://"), end="")
+                print("Changed from 'git' to 'https'.", file=sys.stderr)
         else:
-            print(line)
+            print(line, end="")
 
 
 if __name__ == "__main__":
